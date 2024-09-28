@@ -1,0 +1,10 @@
+langchain
+langchain_community
+python-dotenv
+flask
+flask_cors
+langchain-google-genai
+ipykernel
+Pillow
+google-generativeai
+pdf2image
