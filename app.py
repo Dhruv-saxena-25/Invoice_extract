@@ -20,6 +20,8 @@ app.secret_key = os.urandom(24)
 
 UPLOAD_FOLDER = 'uploads'
 
+os.makedirs(UPLOAD_FOLDER, exist_ok= True)
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
@@ -63,7 +65,7 @@ You will have to extract the following information
 Please extract important information from invoice, such as:
     - Name 
     - Date of purchase
-    - CustomerAddress
+    - Customer Address
     - Description of product
     - Total Amount
     - Buyer Name
@@ -113,7 +115,8 @@ def upload_file():
                 flash(str(e))
                 return render_template('index.html')
             finally:
-                os.remove(filepath)  # Clean up the uploaded file
+                pass 
+                # os.remove(filepath)  # Clean up the uploaded file
         else:
             flash('Allowed file type is PDF')
             return render_template('index.html')
