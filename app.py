@@ -9,7 +9,9 @@ import os
 import shutil
 from dotenv import load_dotenv
 load_dotenv()
-import os, json
+import os 
+import json
+import html
 os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
 
 
@@ -59,11 +61,13 @@ You are an expert in understanding invoices.
 You will receive input images as invoices &
 You will have to extract the following information
 Please extract important information from invoice, such as:
-    - Name
-    - Date
-    - Description
+    - Name 
+    - Date of purchase
+    - CustomerAddress
+    - Description of product
     - Total Amount
-    - etc
+    - Buyer Name
+    - other details
     """
 
 
@@ -79,7 +83,10 @@ def generate_response(base64_image, input_prompt):
     ]
 )
     response = llm.invoke([extracted_inforamtion])
-    return response.content
+    print(response)
+    result= response.content.strip().replace('```json', '').replace('```', '').strip()
+    analysis = json.loads(result)
+    return analysis
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -100,8 +107,8 @@ def upload_file():
             file.save(filepath)
             
             try:
-                result = generate_response(filepath, input_prompt)
-                return render_template('result.html', response=result)
+                answer = generate_response(filepath, input_prompt)
+                return render_template('result.html', response=answer)
             except ValueError as e:
                 flash(str(e))
                 return render_template('index.html')

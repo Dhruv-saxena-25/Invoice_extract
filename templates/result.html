@@ -30,7 +30,13 @@
         <main class="bg-white shadow-lg rounded-lg overflow-hidden">
             <div class="p-6">
                 <div class="analysis-content prose prose-red max-w-none">
-                    {{ response }}
+                    Buyer Name: {{ response["Buyer Name"]  if response["Buyer Name"] else "NA" }} <br>
+                    Date: {{ response["Date of purchase"] }} <br>
+                    Description: {{ response["Description of product"] }} <br>
+                    Total Amount: {{ response["Total Amount"] if response["Total Amount"] else "NA" }} <br>
+                    Customer Address: {{ response["Billing Address"] }} <br>
+                    Seller Name: {{ response["Name"] if response["Name"] else "NA"  }} <br>
+                    <!-- Etc: {{response["other details"]}} -->
                 </div>
             </div>
         </main>
