@@ -130,6 +130,7 @@ env.bak/
 venv.bak/
 artifacts
 uploads
+main.py
 
 # Spyder project settings
 .spyderproject

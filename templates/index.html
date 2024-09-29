@@ -1,57 +1,92 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Analyzer</title>
+    <title>Veolia | Invoice Analyzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        redGradientStart: '#FF416C',
+                        redGradientEnd: '#FF4B2B',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            line-height: 1.6; 
-            max-width: 600px; 
-            margin: 0 auto; 
-            padding: 20px;
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .5;
+            }
         }
-        form { 
-            display: flex; 
-            flex-direction: column; 
-        }
-        input, textarea { 
-            margin-bottom: 10px; 
-            padding: 5px;
-        }
-        button { 
-            padding: 10px; 
-            background-color: #007bff; 
-            color: white; 
-            border: none; 
-            cursor: pointer;
+
+        .animate-pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
     </style>
 </head>
-<body>
-    <h1>Invoice Analyzer</h1>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-    <form method="post" enctype="multipart/form-data">
-        <label for="file">Upload Invoice (PDF, PNG, JPG):</label>
-        <input type="file" name="file" accept="" required>
-        
-        <!-- <label for="job_title">Job Title:</label>
-        <input type="text" name="job_title" required>
-        
-        <label for="job_description">Job Description:</label>
-        <textarea name="job_description" rows="5" required></textarea> -->
-        
-        <button type="submit">Analyze Invoice</button>
-    </form>
+
+<body class="bg-gray-100 flex flex-col min-h-screen justify-center items-center mx-auto w-full">
+    <div class="container mx-auto px-4 py-16">
+        <div class="flex flex-col lg:flex-row items-center justify-between mx-auto">
+            <!-- Left side content -->
+            <div class="lg:w-3/2 mb-10 lg:mb-0">
+                <div class="inline-flex items-center">
+                    <img src="https://res.cloudinary.com/dtsuvx8dz/image/upload/v1727619483/jewdyuwakkee5z9y4tgh.png "
+                        alt="" class="h-12 w-12 rounded-full " />
+                    <h1 class="text-red-500 text-3xl pl-2 font-medium">Veolia</h1>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                    Extract Data from <span class="text-red-500">Invoices</span> in Seconds
+                </h1>
+                <p class="text-xl text-gray-600 mb-8">
+                    Streamline your workflow with our AI-powered invoice data extraction tool. Save time and reduce
+                    errors.
+                </p>
+                <form class="space-y-4" method="post" enctype="multipart/form-data">
+                    <div class="py-4">
+                        <label for="invoice" class="block text-sm font-medium text-gray-700 mb-2" for="file">Upload
+                            Invoice (PDF, PNG, JPG)
+                        </label>
+                        <div class="flex items-center">
+                            <input type="file" name="file" accept="" required accept=".pdf,.jpg,.png" class="block w-3/4 text-sm text-gray-500 border-2 border-gray-300 py-1 rounded-3xl
+                                                file:mr-4 file:py-3 file:px-4
+                                                file:rounded-full file:border-0
+                                                file:text-sm file:font-semibold
+                                                file:bg-gradient-to-r file:from-redGradientStart file:to-redGradientEnd file:text-white
+                                                hover:file:bg-gradient-to-l file:transition-all file:duration-300 file:ease-in-out
+                                                file:shadow-lg file:hover:shadow-xl" />
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-redGradientStart to-redGradientEnd text-white font-bold rounded-full shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 hover:brightness-110 relative overflow-hidden group">
+                        <span class="relative z-10">Extract Data Now</span>
+                        <span
+                            class="absolute inset-0 bg-gradient-to-r from-redGradientEnd to-redGradientStart opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right side image -->
+            <div class="lg:w-1/2">
+                <img src="https://res.cloudinary.com/dtsuvx8dz/image/upload/v1727620515/mfkfe4a3acvg75ptwauc.png"
+                    alt="Invoice Extraction Illustration"
+                    class=" h-auto  transform hover:scale-105 transition duration-300 ease-in-out" />
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>

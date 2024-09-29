@@ -64,15 +64,6 @@ Please extract important information from invoice, such as:
     - Description
     - Total Amount
     - etc
-    
-    Respond with a JSON structure like this:
-    {{
-      "company_name": "<company_name>",
-      "date": "<date>",
-      "description": "<description>",
-      "amount": "<amount>"
-      "ETC" : "<etc>"
-    }}
     """
 
 
@@ -110,7 +101,6 @@ def upload_file():
             
             try:
                 result = generate_response(filepath, input_prompt)
-                print(type(result))
                 return render_template('result.html', response=result)
             except ValueError as e:
                 flash(str(e))
