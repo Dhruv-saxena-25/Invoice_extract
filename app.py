@@ -115,8 +115,7 @@ def upload_file():
                 flash(str(e))
                 return render_template('index.html')
             finally:
-                pass 
-                # os.remove(filepath)  # Clean up the uploaded file
+                os.remove(filepath)  # Clean up the uploaded file
         else:
             flash('Allowed file type is PDF')
             return render_template('index.html')
@@ -124,5 +123,4 @@ def upload_file():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     app.run(host= "0.0.0.0", port= 5000, debug=True)
