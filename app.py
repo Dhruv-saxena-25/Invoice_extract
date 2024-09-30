@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash
 from werkzeug.utils import secure_filename
 from langchain_core.messages import HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -16,13 +16,14 @@ os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
 
 
 app = Flask(__name__)
+
 app.secret_key = os.urandom(24)
 
-UPLOAD_FOLDER = 'uploads'
+# UPLOAD_FOLDER = 'uploads'
 
-os.makedirs(UPLOAD_FOLDER, exist_ok= True)
+# os.makedirs(UPLOAD_FOLDER, exist_ok= True)
 
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 # Function to convert PDF to images and save them
@@ -87,29 +88,41 @@ def generate_response(base64_image, input_prompt):
     response = llm.invoke([extracted_inforamtion])
     print(response)
     result= response.content.strip().replace('```json', '').replace('```', '').strip()
-    analysis = json.loads(result)
-    return analysis
-
-
+    try: 
+        analysis = json.loads(result)
+        return analysis
+    except json.JSONDecodeError as e:
+        print(f"Invalid JSON: {e}")
+        return None
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
+
+
 @app.route('/get_response', methods=['GET', 'POST'])
 def upload_file():
+    os.makedirs('uploads', exist_ok= True)
     if request.method == 'POST':
         if 'file' not in request.files:
+            flash('No file part')
             return render_template('index.html')
         file = request.files['file']
+        
         if file:
             filename = secure_filename(file.filename)
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            filepath = os.path.join("uploads/", filename)
             file.save(filepath)
-            answer = generate_response(filepath, input_prompt)
-            os.remove(filepath)  # Clean up the uploaded file
-            return render_template('result.html', response=answer)
-    
+            
+            try:
+                answer = generate_response(filepath, input_prompt)
+                return render_template('result.html', response=answer)
+            except ValueError as e:
+                flash(str(e))
+                return render_template('index.html')
+            finally:
+                os.remove(filepath)  # Clean up the uploaded file
 
 if __name__ == '__main__':
     app.run(host= "0.0.0.0", port= 5000, debug=True)
