@@ -19,12 +19,6 @@ app = Flask(__name__)
 
 app.secret_key = os.urandom(24)
 
-# UPLOAD_FOLDER = 'uploads'
-
-# os.makedirs(UPLOAD_FOLDER, exist_ok= True)
-
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 
 # Function to convert PDF to images and save them
 def pdf_to_images(pdf_path):
@@ -56,7 +50,6 @@ def image_to_base64(path):
         base64_string = base64.b64encode(image_file.read()).decode("utf-8")
     base64_image = f"data:{mime_type};base64,{base64_string}"
     return base64_image
-
 
 
 input_prompt = """
@@ -105,10 +98,11 @@ def index():
 def upload_file():
     os.makedirs('uploads', exist_ok= True)
     if request.method == 'POST':
+        
+        file = request.files['file']
         if 'file' not in request.files:
             flash('No file part')
             return render_template('index.html')
-        file = request.files['file']
         
         if file:
             filename = secure_filename(file.filename)
